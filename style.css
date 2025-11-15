@@ -1,0 +1,193 @@
+/* Modern stylesheet for Semester Calculator */
+:root{
+  --bg:#0f1724; /* deep navy */
+  --card:#0b1220;
+  --muted:#9aa6b2;
+  --accent:#6ee7b7; /* mint */
+  --accent-2:#60a5fa; /* sky */
+  --glass: rgba(255,255,255,0.04);
+  --surface:#072034;
+  --radius:14px;
+  --fw: 600;
+  --danger: #ff4d6d;
+  --warn: #ff9f43;
+  --good: #34d399;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg,#071025 0%, #071827 60%);
+  color:#e6eef6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding:32px;display:flex;align-items:flex-start;justify-content:center;
+}
+.container{width:100%;max-width:980px}
+.header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.header h2{margin:0;font-size:1.25rem}
+.header .subtitle{color:var(--muted);font-size:0.9rem}
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow: 0 6px 24px rgba(3,7,18,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.form-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.label{font-size:0.85rem;color:var(--muted);margin-bottom:6px}
+.input-wrap{display:flex;flex-direction:column}
+.input{appearance:none;border:1px solid rgba(255,255,255,0.06);background:transparent;padding:10px 12px;border-radius:10px;color:inherit;min-width:140px}
+.input::placeholder{color:rgba(230,238,246,0.45)}
+.input:focus{outline:none;box-shadow:0 6px 22px rgba(96,165,250,0.08);border-color:rgba(96,165,250,0.28)}
+.btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;padding:10px 14px;border-radius:10px;color:#04202a;font-weight:700;cursor:pointer}
+.btn:active{transform:translateY(1px)}
+.small{color:var(--muted);font-size:0.9rem}
+.note{color:var(--muted);margin-top:8px}
+.controls{display:flex;gap:10px;align-items:center}
+.reset{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:8px 10px;border-radius:10px;cursor:pointer}
+.table-wrap{margin-top:18px;overflow:auto;border-radius:10px}
+table{width:100%;border-collapse:collapse;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));}
+th,td{padding:12px 10px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.03);font-size:0.95rem}
+th{color:var(--muted);font-weight:600;background:transparent}
+tbody tr:hover{background:linear-gradient(90deg, rgba(96,165,250,0.03), rgba(110,231,183,0.02))}
+.grade-pill{display:inline-block;padding:6px 10px;border-radius:999px;font-weight:700;background:rgba(255,255,255,0.03)}
+.bad{color:#ffb4b4}
+.ok{color:#b7ffd2}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.legend .item{display:flex;gap:6px;align-items:center}
+.swatch{width:12px;height:12px;border-radius:3px}
+/* responsive */
+@media (max-width:720px){
+  .form-row{flex-direction:column}
+  .input{width:100%}
+  th,td{font-size:0.85rem;padding:10px 8px}
+}
+/* subtle animations */
+.fade-in{animation:fadeIn .28s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Hover animations for note cells */
+/* base note cell class - script should add one of .note-impossible / .note-hard / .note-possible to the <td> */
+.note-cell{transition:background-color .28s ease, transform .14s ease, box-shadow .28s ease;cursor:default}
+.note-cell:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(2,6,23,0.4)}
+
+/* impossible - bright red on hover */
+.note-cell.note-impossible:hover{
+  background: linear-gradient(90deg, rgba(255,77,109,0.12), rgba(255,77,109,0.06));
+  border-radius:8px;color:var(--danger);
+  animation:shake .9s ease-in-out;
+}
+@keyframes shake{
+  0%{transform:translateX(0) translateY(-2px)}
+  25%{transform:translateX(-6px) translateY(-2px)}
+  50%{transform:translateX(6px) translateY(-2px)}
+  75%{transform:translateX(-3px) translateY(-2px)}
+  100%{transform:translateX(0) translateY(-2px)}
+}
+
+/* hard (near-max) - orange hover */
+.note-cell.note-hard:hover{
+  background: linear-gradient(90deg, rgba(255, 159, 67, 0.09), rgba(255,159,67,0.04));
+  border-radius:8px;color:var(--warn);
+  transform:translateY(-3px) scale(1.01);
+}
+
+/* possible - green hover */
+.note-cell.note-possible:hover{
+  background: linear-gradient(90deg, rgba(52,211,153,0.08), rgba(52,211,153,0.03));
+  border-radius:8px;color:var(--good);
+  transform:translateY(-3px) scale(1.01);
+}
+
+/* Improve light theme contrast */
+body.light{
+  background: linear-gradient(180deg,#f6fbff 0%, #eef6fb 60%);
+  color:#0b1220;
+}
+body.light .card{background:#ffffffcc;box-shadow:0 8px 30px rgba(2,6,23,0.06);border:1px solid rgba(11,18,32,0.04)}
+body.light .input{border:1px solid rgba(11,18,32,0.06);background:#fff;color:#062022}
+body.light .reset{border:1px solid rgba(11,18,32,0.06);color:#334155}
+body.light .btn{color:#062022}
+body.light th, body.light td{border-bottom:1px solid rgba(11,18,32,0.03);color:#102027}
+body.light .label, body.light .note, body.light .small{color:#1f2a37}
+
+/* Light-theme variants for note states */
+body.light .note-cell.note-impossible:hover{background:linear-gradient(90deg, rgba(255,77,109,0.14), rgba(255,77,109,0.06));color:#7a0012}
+body.light .note-cell.note-hard:hover{background:linear-gradient(90deg, rgba(255,159,67,0.12), rgba(255,159,67,0.04));color:#7a3a00}
+body.light .note-cell.note-possible:hover{background:linear-gradient(90deg, rgba(52,211,153,0.09), rgba(52,211,153,0.03));color:#065f46}
+
+/* Scrollbar styling for table overflow */
+.table-wrap::-webkit-scrollbar{height:8px}
+
+/* ============================
+   THEME SWITCH COMPONENT
+   ============================ */
+
+/* ===============================
+   ICON-BASED THEME SWITCH
+   =============================== */
+
+.theme-icon-switch {
+  position: relative;
+  width: 60px;
+  height: 34px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.theme-icon-switch input {
+  display: none;
+}
+
+/* background of slider */
+.slider-icon {
+  background: #475569; /* default dark accent */
+  border-radius: 40px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+/* icons */
+.slider-icon .icon {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+/* moon (left side) */
+.slider-icon .moon-icon {
+  left: 6px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* sun (right side) */
+.slider-icon .sun-icon {
+  right: 6px;
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+/* when checked -> LIGHT MODE */
+.theme-icon-switch input:checked + .slider-icon {
+  background: #60a5fa;
+}
+
+/* show sun, hide moon */
+.theme-icon-switch input:checked + .slider-icon .sun-icon {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.theme-icon-switch input:checked + .slider-icon .moon-icon {
+  opacity: 0;
+  transform: translateX(-10px);
+}

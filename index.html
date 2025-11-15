@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Semester Score Calculator</title>
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- External JavaScript -->
+  <script defer src="script.js"></script>
+</head>
+
+<body class="fade-in">
+
+  <div class="container">
+
+    <div class="header">
+      <div>
+        <h2>Semester Score Calculator</h2>
+        <div class="subtitle small">
+          Internal 60% (CT1 50 + CT2 60 = raw 110) • External 40% (End-sem 75)
+        </div>
+      </div>
+
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+       <label class="theme-icon-switch">
+  <input type="checkbox" id="themeSwitch">
+  <span class="slider-icon">
+    <img src="moon.png" class="icon moon-icon">
+    <img src="sun.svg" class="icon sun-icon">
+  </span>
+</label>
+
+
+        <button id="reset" class="reset">Reset</button>
+      </div>
+    </div>
+
+    <div class="card">
+
+      <div class="form-row">
+
+        <div class="input-wrap">
+          <div class="label">CT1 (out of 50)</div>
+          <input id="ct1" class="input" type="number" min="0" max="50" step="0.01" placeholder="e.g. 40">
+        </div>
+
+        <div class="input-wrap">
+          <div class="label">CT2 (out of 60)</div>
+          <input id="ct2" class="input" type="number" min="0" max="60" step="0.01" placeholder="e.g. 45">
+        </div>
+
+        <div class="input-wrap">
+          <div class="label">Internal total (weighted, out of 60)</div>
+          <input id="internal" class="input" type="number" min="0" max="60" step="0.01" placeholder="e.g. 46.36">
+        </div>
+
+        <div class="input-wrap">
+          <div class="label">End-Sem (out of 75)</div>
+          <input id="ext" class="input" type="number" min="0" max="75" step="0.01" placeholder="e.g. 60">
+        </div>
+
+        <div class="controls" style="margin-left:6px">
+          <button id="calcInfo" class="btn">How it works</button>
+        </div>
+
+      </div>
+
+      <div class="note">
+        You may either provide CT1 & CT2 separately OR provide the 
+        <strong>Internal total (weighted)</strong> (out of 60).
+      </div>
+
+      <div id="status" class="note"></div>
+
+      <div class="table-wrap">
+        <table id="output">
+          <thead>
+            <tr>
+              <th>Grade</th>
+              <th>Percentage range</th>
+              <th>Required value(s)</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="legend small">
+      <div class="item"><span class="swatch" style="background:rgba(52, 211, 153, 0.507)"></span> On Track</div>
+      <div class="item"><span class="swatch" style="background:#ff9e437d"></span> Hard work</div>
+      
+      <div class="item"><span class="swatch" style="background:rgba(255, 77, 110, 0.574)"></span>Failure</div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>
