@@ -7,5 +7,11 @@
   },
   "devDependencies": {
     "serve": "^14.0.1"
-  }
+  },
+  "description": "",
+  "main": "script.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
 }
