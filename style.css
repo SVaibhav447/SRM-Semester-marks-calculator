@@ -191,3 +191,83 @@ body.light .note-cell.note-possible:hover{background:linear-gradient(90deg, rgba
   opacity: 0;
   transform: translateX(-10px);
 }
+
+/* ============================================
+   RESPONSIVE (phones)
+   ============================================ */
+
+@media (max-width: 480px) {
+
+  /* Global font scale-down */
+  body {
+    font-size: 0.88rem;
+    padding: 14px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+  }
+
+  .small, .note, .label, .subtitle {
+    font-size: 0.80rem;
+  }
+
+  /* Input fields */
+  .input {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+    min-width: 100%;
+  }
+
+  .input-wrap {
+    width: 100%;
+  }
+
+  /* Buttons */
+  .btn,
+  .reset {
+    padding: 8px 10px;
+    font-size: 0.80rem;
+  }
+
+  /* Theme switch */
+  .theme-icon-switch {
+    transform: scale(0.8);
+  }
+
+  /* Card padding reduced */
+  .card {
+    padding: 14px;
+  }
+
+  /* Table adjustments */
+  table {
+    font-size: 0.80rem;
+  }
+
+  th, td {
+    padding: 8px 6px;
+  }
+
+  /* Make table scroll easier */
+  .table-wrap {
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+
+  /* Grade pill smaller */
+  .grade-pill {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+
+  /* Note cell adjustments */
+  .note-cell {
+    font-size: 0.78rem;
+  }
+
+  /* Legend smaller */
+  .legend .item {
+    font-size: 0.80rem;
+  }
+}
