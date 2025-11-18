@@ -164,20 +164,28 @@ function compute() {
 
   // If all known -> show final
   if (internalRawKnown !== null && ext !== null) {
-    const finalPerc = finalPercentage(internalRawKnown, ext);
-    const rounded = Math.round(finalPerc);
-    const g = grades.find(g => rounded >= g[1] && rounded <= g[2]);
+  const finalPerc = finalPercentage(internalRawKnown, ext);
+  const rounded = Math.round(finalPerc);
+  const gObj = grades.find(g => rounded >= g[1] && rounded <= g[2]);
+  const gradeLabel = gObj ? gObj[0] : 'N/A';
 
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><span class="grade-pill">--</span></td>
-      <td>--</td>
-      <td style="text-align:left">Final: ${finalPerc.toFixed(2)}% (rounded: ${rounded}%)</td>
-      <td class="note-cell note-possible">${g ? `Grade: ${g[0]}` : 'Grade: N/A'}</td>`;
-    tbody.appendChild(tr);
-    notes.className
-    return;
-  }
+  // choose grade class same as later rows
+  let gradeClass = '';
+  if (gradeLabel === 'O') gradeClass = 'grade-bright';
+  else if (['A+','A','B+','B'].includes(gradeLabel)) gradeClass = 'grade-good';
+  else if (gradeLabel === 'F') gradeClass = 'grade-bad';
+  else gradeClass = 'grade-warn';
+
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><span class="grade-pill ${gradeClass}">${gradeLabel}</span></td>
+    <td>--</td>
+    <td style="text-align:left">Final: ${finalPerc.toFixed(2)}% (rounded: ${rounded}%)</td>
+    <td class="note-cell note-possible">Grade confirmed</td>`;
+
+  tbody.appendChild(tr);
+  return;
+}
 
   // iterate grades
   grades.forEach(([grade, pMin, pMax]) => {
@@ -293,6 +301,24 @@ themeToggle && themeToggle.addEventListener('click', () => {
 
 calcInfo && calcInfo.addEventListener('click', () => {
   alert('Enter known fields. Leave unknown ones empty. Internal weighted overrides CT1+CT2.');
+});
+
+const ct1 = document.getElementById('ct1');     
+const ct2 = document.getElementById('ct2');
+const ext = document.getElementById('ext');
+const internal = document.getElementById('internal');
+
+ct1val = parseFloat(ct1.value) || null;
+ct2val = parseFloat(ct2.value) || null;
+extval = parseFloat(ext.value) || null;
+internalval = parseFloat(internal.value) || null;
+
+ct1.addEventListener('input', () => {
+
+  if (ct1val < 0 || ct1val > MAX.ct1) {
+    alert(`CT1 must be between 0 and ${MAX.ct1}`);
+    ct1.value = '';
+  }
 });
 
 // initial run
