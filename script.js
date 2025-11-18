@@ -308,16 +308,31 @@ const ct2 = document.getElementById('ct2');
 const ext = document.getElementById('ext');
 const internal = document.getElementById('internal');
 
-ct1val = parseFloat(ct1.value) || null;
-ct2val = parseFloat(ct2.value) || null;
-extval = parseFloat(ext.value) || null;
-internalval = parseFloat(internal.value) || null;
-
 ct1.addEventListener('input', () => {
 
-  if (ct1val < 0 || ct1val > MAX.ct1) {
+  if (ct1.value < 0 || ct1.value > MAX.ct1) {
     alert(`CT1 must be between 0 and ${MAX.ct1}`);
     ct1.value = '';
+  }
+});
+
+ct2.addEventListener('input', () => {
+  if (ct2.value < 0 || ct2.value > MAX.ct2) {
+    alert(`CT2 must be between 0 and ${MAX.ct2}`);
+    ct2.value = '';
+  }
+});
+
+ext.addEventListener('input', () => {
+  if (ext.value < 0 || ext.value > MAX.ext) {
+    alert(`End-Sem must be between 0 and ${MAX.ext}`);
+    ext.value = '';
+  }
+});
+internal.addEventListener('input', () => {
+  if (internal.value < 0 || internal.value > internalWeight) {
+    alert(`Internal Weighted must be between 0 and ${internalWeight}`);
+    internal.value = '';
   }
 });
 
