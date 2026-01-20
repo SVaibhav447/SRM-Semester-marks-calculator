@@ -1,4 +1,4 @@
-// semester_script.js - updated note classification prioritizing LOWER bound for hover state
+// semester_script.js
 
 // ===============================
 // CONFIG
