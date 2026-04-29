@@ -24,6 +24,8 @@ const grades = [
 // ===============================
 const el = id => document.getElementById(id);
 
+
+
 const ct1In = el("ct1");
 const ct2In = el("ct2");
 const internalIn = el("internal");
@@ -52,66 +54,66 @@ function finalPercentage(internalRaw, externalRaw) {
   return internalWeightedFromRaw(internalRaw) + externalWeightedFromRaw(externalRaw);
 }
 
-// Determine note state and human-friendly text
+
 function classifyNoteByLower(lo, hi) {
-  // Prioritize lower bound (lo). Color/hover is decided by lower bound feasibility.
-  // lo/hi objects may be of type 'ext' (value in raw ext), 'int_needed' (value raw internal), etc.
+  const epsilon = 0.0001;
+
+  const isExt = x => x?.type === 'ext';
+  const isInt = x => x?.type === 'int_needed';
+
+  const getMax = x => isExt(x) ? MAX.ext : internalRawTotal;
+
+  const isImpossible = x =>
+    x && (x.value > getMax(x) + epsilon);
+
+  const isAchieved = x =>
+    x && (x.value <= 0);
+
+  const isHard = x =>
+    x && (
+      (isExt(x) && x.value >= MAX.ext - 9) ||
+      (isInt(x) && x.value >= internalRawTotal - 9)
+    );
+
   const res = { text: "", className: "note-cell" };
 
-  const hardThresholdExt = MAX.ext - 9; // >= this -> hard
-  const hardThresholdInt = internalRawTotal - 9;
+  if (!lo) return { text: "Possible", className: "note-cell note-possible" };
 
-  // If lower bound is missing or NA, fallback to general logic
-  if (!lo) {
-    res.text = "Possible";
-    res.className += " note-possible";
-    return res;
+  const hiImpossible = isImpossible(hi);
+
+  // 1. Impossible
+  if (isImpossible(lo)) {
+    return { text: "Impossible", className: "note-cell note-impossible" };
   }
 
-  // Helper to mark impossible based on lower bound
-  const lowerImpossible = (lo.type === 'ext' && lo.value > MAX.ext) || (lo.type === 'int_needed' && lo.value > internalRawTotal);
-  if (lowerImpossible) {
-    res.text = "Impossible";
-    res.className += " note-impossible";
-    return res;
+  // 2. Already achieved
+  if (isAchieved(lo)) {
+    return {
+      text: hiImpossible
+        ? "Already achieved (max limit reached)"
+        : "Skipping is now also an option!",
+      className: "note-cell note-possible"
+    };
   }
 
-  // If lower bound already satisfied (<=0 required)
-  const lowerAchieved = (lo.type === 'ext' && lo.value <= 0) || (lo.type === 'int_needed' && lo.value <= 0);
-  if (lowerAchieved) {
-    // But if upper bound is impossible, still green because lower is enough
-    if (hi && ((hi.type === 'ext' && hi.value > MAX.ext) || (hi.type === 'int_needed' && hi.value > internalRawTotal))) {
-      res.text = "Already achieved (upper bound impossible)";
-    } else {
-      res.text = "Skipping is now also an option!";
-    }
-    res.className += " note-possible";
-    return res;
+  // 3. Hard
+  if (isHard(lo)) {
+    return {
+      text: hiImpossible
+        ? "Possible (hard, near max)"
+        : "Possible (hard)",
+      className: "note-cell note-hard"
+    };
   }
 
-  // If lower requires near-max -> hard
-  const lowerHard = (lo.type === 'ext' && lo.value >= hardThresholdExt) || (lo.type === 'int_needed' && lo.value >= hardThresholdInt);
-  if (lowerHard) {
-    // If upper impossible, still mark as Possible (hard)
-    if (hi && ((hi.type === 'ext' && hi.value > MAX.ext) || (hi.type === 'int_needed' && hi.value > internalRawTotal))) {
-      res.text = "Possible (hard) — upper bound impossible";
-    } else {
-      res.text = "Possible (hard)";
-    }
-    res.className += " note-hard";
-    return res;
-  }
-
-  // Default: lower bound possible and not hard -> green
-  if (hi && ((hi.type === 'ext' && hi.value > MAX.ext) || (hi.type === 'int_needed' && hi.value > internalRawTotal))) {
-    res.text = "Possible — upper bound impossible"; // still green because lower achievable
-  } else {
-    res.text = "Possible";
-  }
-  res.className += " note-possible";
-  return res;
+  // 4. Default
+  return {
+    text: hiImpossible
+      ? "Possible (upper bound exceeds max marks)"
+      : "Possible",
+    className: "note-cell note-possible"
+  };
 }
-
 // Build readable representation for requirement cell
 function fmtRequirement(x) {
   if (!x) return "--";
